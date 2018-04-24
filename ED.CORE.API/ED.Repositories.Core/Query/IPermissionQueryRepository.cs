@@ -2,7 +2,7 @@
 
 namespace ED.Repositories.Core.Query
 {
-    public interface IRoleQueryRepository : IDapperQueryRepository<Role>
+    public interface IPermissionQueryRepository : IDapperQueryRepository<Permission>
     {
          
     }

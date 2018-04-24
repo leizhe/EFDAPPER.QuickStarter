@@ -1,7 +1,4 @@
 ﻿
-
-using Dapper.LambdaExtension.LambdaSqlBuilder.Attributes;
-
 namespace ED.Models.Command
 {
     public class BaseEntityC

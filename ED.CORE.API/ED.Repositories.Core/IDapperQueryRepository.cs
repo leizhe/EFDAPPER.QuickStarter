@@ -8,6 +8,7 @@ namespace ED.Repositories.Core
 {
     public interface IDapperQueryRepository<TEntity> where TEntity : class
     {
+
         TEntity FindSingle(Expression<Func<TEntity, bool>> exp = null);
 
         IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> exp = null);

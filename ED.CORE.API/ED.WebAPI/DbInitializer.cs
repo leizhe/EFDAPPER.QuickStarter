@@ -3,7 +3,7 @@ using System.Linq;
 using ED.Models.Command;
 using ED.Repositories.EntityFramework;
 
-namespace ED.Repositories.Migrations
+namespace ED.WebAPI
 {
     public static class DbInitializer
     {

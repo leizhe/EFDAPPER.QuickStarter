@@ -8,17 +8,18 @@ namespace ED.Models.Command
     {
         public string RoleName { get; set; }
 
-        public long CreatorUserId { get; set; }
+        public long? CreatorUserId { get; set; }
 
         public DateTime CreationTime { get; set; }
-        
+
+        public virtual ICollection<RolePermission> RolePermissions { get; set; }
 
         public virtual ICollection<UserRole> UserRoles { get; set; }
 
         public Role()
         {
+            RolePermissions = new HashSet<RolePermission>();
             UserRoles = new HashSet<UserRole>();
         }
-        
     }
 }

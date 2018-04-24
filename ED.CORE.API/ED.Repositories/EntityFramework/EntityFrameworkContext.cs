@@ -7,29 +7,29 @@ namespace ED.Repositories.EntityFramework
     public class EntityFrameworkContext : DbContext
     {
 
-        public EntityFrameworkContext(DbContextOptions<EntityFrameworkContext> options)
-            : base(options)
-        {
-        }
-       
+        //public EntityFrameworkContext(DbContextOptions<EntityFrameworkContext> options)
+        //    : base(options)
+        //{
+        //}
 
-        ////private readonly string _connstr= Global.CommandDB;
+
+        private readonly string _connstr= Global.CommandDB;
         //private readonly string _connstr = "dsdsdsd";
         //public EntityFrameworkContext()
         //{
         //}
 
-        //public EntityFrameworkContext(string connstr)
-        //{
-        //    _connstr = connstr;
-        //}
+        public EntityFrameworkContext(string connstr)
+        {
+            _connstr = connstr;
+        }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer(_connstr);
-        //    //optionsBuilder.UseInMemoryDatabase("TodoList");
-        //    //base(optionsBuilder);
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(_connstr);
+            //optionsBuilder.UseInMemoryDatabase("TodoList");
+            //base(optionsBuilder);
+        }
 
         public DbSet<User> Users { get; set; }
 

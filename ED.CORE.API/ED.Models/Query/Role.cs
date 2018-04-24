@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dapper.LambdaExtension.LambdaSqlBuilder.Attributes;
-//using DapperExtensions.Mapper;
 using ED.Models.Auditing;
 
 namespace ED.Models.Query
@@ -10,18 +10,20 @@ namespace ED.Models.Query
     {
         public string RoleName { get; set; }
 
-        public long CreatorUserId { get; set; }
+        public long? CreatorUserId { get; set; }
 
         public DateTime CreationTime { get; set; }
 
-        //[Serializable]
-        //public sealed class RoleOrmMapper : ClassMapper<RoleDto>
-        //{
-        //    public RoleOrmMapper()
-        //    {
-        //        Table("Role");
-        //        AutoMap();
-        //    }
-        //}
+        public virtual ICollection<RolePermission> RolePermissions { get; set; }
+
+        public virtual ICollection<Command.UserRole> UserRoles { get; set; }
+
+        public Role()
+        {
+            RolePermissions = new HashSet<RolePermission>();
+            UserRoles = new HashSet<Command.UserRole>();
+        }
+
+       
     }
 }

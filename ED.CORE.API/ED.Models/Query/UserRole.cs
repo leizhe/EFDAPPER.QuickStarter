@@ -1,7 +1,4 @@
-﻿using System;
-using Dapper.LambdaExtension.LambdaSqlBuilder.Attributes;
-
-//using DapperExtensions.Mapper;
+﻿using Dapper.LambdaExtension.LambdaSqlBuilder.Attributes;
 
 namespace ED.Models.Query
 {
@@ -14,18 +11,6 @@ namespace ED.Models.Query
         public virtual User User { get; set; }
 
         public virtual Role Role { get; set; }
-
-
-        //[Serializable]
-        //public sealed class UserRoleOrmMapper : ClassMapper<UserRoleDto>
-        //{
-        //    public UserRoleOrmMapper()
-        //    {
-        //        Table("UserRole");
-        //        Map(f => f.User).Ignore();
-        //        Map(f => f.Role).Ignore();
-        //        AutoMap();
-        //    }
-        //}
+        
     }
 }

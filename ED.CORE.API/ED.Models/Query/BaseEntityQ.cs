@@ -1,5 +1,4 @@
 ﻿
-
 using Dapper.LambdaExtension.LambdaSqlBuilder.Attributes;
 
 namespace ED.Models.Query
