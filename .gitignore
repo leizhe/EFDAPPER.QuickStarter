@@ -1,0 +1,15 @@
+/ED.CORE.API/.vs
+/ED.CORE.API/ED.Application/obj
+/ED.CORE.API/ED.Application/bin
+/ED.CORE.API/ED.Application.Test/bin
+/ED.CORE.API/ED.Application.Test/obj
+/ED.CORE.API/ED.Common/obj
+/ED.CORE.API/ED.Common/bin
+/ED.CORE.API/ED.Models/bin
+/ED.CORE.API/ED.Models/obj
+/ED.CORE.API/ED.Repositories/bin
+/ED.CORE.API/ED.Repositories/obj
+/ED.CORE.API/ED.Repositories.Core/bin
+/ED.CORE.API/ED.Repositories.Core/obj
+/ED.CORE.API/ED.WebAPI/bin
+/ED.CORE.API/ED.WebAPI/obj
