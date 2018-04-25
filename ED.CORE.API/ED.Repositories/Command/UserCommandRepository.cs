@@ -6,6 +6,8 @@ namespace ED.Repositories.Command
 {
     public class UserCommandRepository : EntityFrameworkRepositoryBase<User>, IUserCommandRepository
     {
-         
+        public UserCommandRepository(EntityFrameworkContext context) : base(context)
+        {
+        }
     }
 }

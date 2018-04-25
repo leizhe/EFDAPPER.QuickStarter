@@ -1,9 +1,9 @@
-﻿using ED.Models.Query;
+﻿//using ED.Models.Query;
 
-namespace ED.Repositories.Core.Query
-{
-    public interface IRolePermissionQueryRepository : IDapperQueryRepository<RolePermission>
-    {
+//namespace ED.Repositories.Core.Query
+//{
+//    public interface IRolePermissionQueryRepository : IDapperQueryRepository<RolePermission>
+//    {
          
-    }
-}
+//    }
+//}

@@ -13,16 +13,16 @@ namespace ED.Repositories.EntityFramework
     public class EntityFrameworkRepositoryBase<TEntity> : IEntityFrameworkCommandRepository<TEntity>, IDisposable
          where TEntity : class
     {
-        //private readonly EntityFrameworkContext _context;
+        private readonly EntityFrameworkContext _context;
 
-        //public EntityFrameworkRepositoryBase(EntityFrameworkContext context)
-        //{
-        //    _context = context;
-        //}
+        public EntityFrameworkRepositoryBase(EntityFrameworkContext context)
+        {
+            _context = context;
+        }
 
-        private readonly ThreadLocal<EntityFrameworkContext> _localCtx = new ThreadLocal<EntityFrameworkContext>(() => new EntityFrameworkContext(Global.CommandDB));
+        //private readonly ThreadLocal<EntityFrameworkContext> _localCtx = new ThreadLocal<EntityFrameworkContext>(() => new EntityFrameworkContext(Global.CommandDB));
 
-        public EntityFrameworkContext _context => _localCtx.Value;
+        //public EntityFrameworkContext Context => _localCtx.Value;
 
 
         public void Add(TEntity entity)

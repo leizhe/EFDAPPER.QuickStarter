@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20180425063709_InitDB.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ED.Common\ED.Common.csproj" />
     <ProjectReference Include="..\ED.Models\ED.Models.csproj" />
     <ProjectReference Include="..\ED.Repositories.Core\ED.Repositories.Core.csproj" />
@@ -17,10 +21,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
     <PackageReference Include="Z.EntityFramework.Plus.BatchDelete.EFCore" Version="1.7.18" />
     <PackageReference Include="Z.EntityFramework.Plus.BatchUpdate.EFCore" Version="1.7.18" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Query\" />
   </ItemGroup>
 
 </Project>
