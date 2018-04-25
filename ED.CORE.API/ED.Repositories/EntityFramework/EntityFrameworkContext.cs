@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 using ED.Common.Extensions;
+using ED.Common.Options;
 using ED.Models.Command;
 using Microsoft.EntityFrameworkCore;
 using Z.EntityFramework.Plus;
@@ -16,46 +17,69 @@ namespace ED.Repositories.EntityFramework
     public sealed class EntityFrameworkContext : DbContext
     {
         private DbContextOption _option;
-
+        public EntityFrameworkContext(DbContextOptions options) : base(options) { }
         public EntityFrameworkContext(DbContextOption option)
         {
             if (option == null)
                 throw new ArgumentNullException(nameof(option));
-            if (string.IsNullOrEmpty(option.ConnectionString))
-                throw new ArgumentNullException(nameof(option.ConnectionString));
-            if (string.IsNullOrEmpty(option.ModelAssemblyName))
-                throw new ArgumentNullException(nameof(option.ModelAssemblyName));
+            if (string.IsNullOrEmpty(option.CommandString))
+                throw new ArgumentNullException(nameof(option.CommandString));
             _option = option;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(_option.ConnectionString);
-            base.OnConfiguring(optionsBuilder);
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer(_option.CommandString);
+        //    base.OnConfiguring(optionsBuilder);
+        //}
+
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
+
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
+
+        public DbSet<Permission> Permissions { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            AddEntityTypes(modelBuilder);
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>().ToTable("User");
+            modelBuilder.Entity<Role>().ToTable("Role");
+            modelBuilder.Entity<UserRole>().ToTable("UserRole");
+            modelBuilder.Entity<RolePermission>().ToTable("RolePermission");
+            modelBuilder.Entity<Permission>().ToTable("Permission");
         }
 
-        private void AddEntityTypes(ModelBuilder modelBuilder)
-        {
-            var assembly = Assembly.Load(_option.ModelAssemblyName);
-            var types = assembly?.GetTypes();
-            var list = types?.Where(t =>
-                t.IsClass && !t.IsGenericType && !t.IsAbstract &&
-                t.GetInterfaces().Any(m => m.GetGenericTypeDefinition() == typeof(BaseEntityC))).ToList();
-            if (list != null && list.Any())
-            {
-                list.ForEach(t =>
-                {
-                    if (modelBuilder.Model.FindEntityType(t) == null)
-                        modelBuilder.Model.AddEntityType(t);
-                });
-            }
-        }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+        //    base.OnModelCreating(modelBuilder);
+        //}
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    AddEntityTypes(modelBuilder);
+        //    base.OnModelCreating(modelBuilder);
+        //}
+
+        //private void AddEntityTypes(ModelBuilder modelBuilder)
+        //{
+        //    var assembly = Assembly.Load(_option.ModelAssemblyName);
+        //    var types = assembly?.GetTypes();
+        //    var list = types?.Where(t =>
+        //        t.IsClass && !t.IsGenericType && !t.IsAbstract &&
+        //        t.GetInterfaces().Any(m => m.GetGenericTypeDefinition() == typeof(BaseEntityC))).ToList();
+        //    if (list != null && list.Any())
+        //    {
+        //        list.ForEach(t =>
+        //        {
+        //            if (modelBuilder.Model.FindEntityType(t) == null)
+        //                modelBuilder.Model.AddEntityType(t);
+        //        });
+        //    }
+        //}
 
         /// <summary>
         /// ExecuteSqlWithNonQuery
@@ -160,7 +184,7 @@ namespace ED.Repositories.EntityFramework
             }
             using (var dt = entities.ToDataTable())
             {
-                using (var conn = new SqlConnection(_option.ConnectionString))
+                using (var conn = new SqlConnection(_option.CommandString))
                 {
                     conn.Open();
                     using (var tran = conn.BeginTransaction())

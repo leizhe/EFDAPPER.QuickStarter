@@ -12,13 +12,21 @@ namespace ED.Repositories.Dapper
     public class DapperRepositoryBase<TEntity> : IDapperQueryRepository<TEntity>
         where TEntity : class
     {
-        private readonly ThreadLocal<DapperContext> _localCtx = new ThreadLocal<DapperContext>(() => new DapperContext(Global.CommandDB));
 
-        protected DapperContext DbContext => _localCtx.Value;
+        private readonly DapperContext _context;
+
+        public DapperRepositoryBase(DapperContext context)
+        {
+            _context = context;
+        }
+
+        //private readonly ThreadLocal<DapperContext> _localCtx = new ThreadLocal<DapperContext>(() => new DapperContext());
+
+        //protected DapperContext DbContext => _localCtx.Value;
 
         public TEntity FindSingle(Expression<Func<TEntity, bool>> exp = null)
         {
-            using (var db = DbContext.GetConnection())
+            using (var db = _context.GetConnection())
             {
                 return db.QueryFirstOrDefault(exp);
             }
@@ -35,7 +43,7 @@ namespace ED.Repositories.Dapper
                 throw new ArgumentOutOfRangeException(nameof(pageNumber), pageNumber, "pageNumber must great than or equal to 1.");
             if (pageSize <= 0)
                 throw new ArgumentOutOfRangeException(nameof(pageSize), pageSize, "pageSize must great than or equal to 1.");
-            using (var db = DbContext.GetConnection())
+            using (var db = _context.GetConnection())
             {
                 var query = db.Query<TEntity>().AsQueryable().Where(expression);
                 var skip = (pageNumber - 1) * pageSize;
@@ -61,7 +69,7 @@ namespace ED.Repositories.Dapper
 
         private IQueryable<TEntity> Filter(Expression<Func<TEntity, bool>> exp)
         {
-            using (var db = DbContext.GetConnection())
+            using (var db = _context.GetConnection())
             {
                 var dbSet = db.Query<TEntity>().AsQueryable();
                 if (exp != null)

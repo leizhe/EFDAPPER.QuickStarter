@@ -2,27 +2,36 @@
 using System.Data;
 using System.Data.SqlClient;
 using ED.Common;
+using ED.Common.Options;
 
 
 namespace ED.Repositories.Dapper
 {
     public class DapperContext 
     {
-        
-        private readonly string _connstr = Global.QueryDB;
-        public DapperContext()
+        private DbContextOption _option;
+
+        //private readonly string _connstr = Global.QueryDB;
+        //public DapperContext()
+        //{
+        //}
+
+        //public DapperContext(string connstr)
+        //{
+
+        //    _connstr = connstr;
+        //}
+        public DapperContext(DbContextOption option)
         {
+            if (option == null)
+                throw new ArgumentNullException(nameof(option));
+            if (string.IsNullOrEmpty(option.QueryString))
+                throw new ArgumentNullException(nameof(option.QueryString));
+            _option = option;
         }
-
-        public DapperContext(string connstr)
-        {
-
-            _connstr = connstr;
-        }
-
         public IDbConnection GetConnection()
         {
-            var conn = new SqlConnection(_connstr);
+            var conn = new SqlConnection(_option.QueryString);
             conn.Open();
             return conn;
         }
@@ -64,7 +73,7 @@ namespace ED.Repositories.Dapper
 
             try
             {
-                var conn = GetConnection(_connstr);
+                var conn = GetConnection(_option.QueryString);
                 if (conn.State == ConnectionState.Open)
                 {
                     isopen = true;

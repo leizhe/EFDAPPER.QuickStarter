@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -10,6 +11,8 @@ using Autofac.Extensions.DependencyInjection;
 using ED.Application.ServiceImp;
 using ED.Common;
 using ED.Common.Helpers;
+using ED.Common.IoC;
+using ED.Common.Options;
 using ED.Repositories.Core;
 using ED.Repositories.Dapper;
 using ED.Repositories.EntityFramework;
@@ -20,11 +23,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
+using Zxw.Framework.NetCore.Filters;
 
 namespace ED.WebAPI
 {
@@ -44,70 +49,7 @@ namespace ED.WebAPI
 
         //public IContainer ApplicationContainer { get; private set; }
 
-        //private IServiceProvider RegisterAutofac(IServiceCollection services)
-        //{
-        //    var assembly = this.GetType().GetTypeInfo().Assembly;
-        //    var builder = new ContainerBuilder();
-        //    var manager = new ApplicationPartManager();
-
-        //    manager.ApplicationParts.Add(new AssemblyPart(assembly));
-        //    manager.FeatureProviders.Add(new ControllerFeatureProvider());
-
-        //    var feature = new ControllerFeature();
-
-        //    manager.PopulateFeature(feature);
-
-
-
-
-        //    builder.RegisterType<ApplicationPartManager>().AsSelf().SingleInstance();
-        //    builder.RegisterTypes(feature.Controllers.Select(ti => ti.AsType()).ToArray()).PropertiesAutowired();
-
-        //    //builder.RegisterAssemblyTypes(typeof(DapperRepositoryBase<>).Assembly)
-        //    //    .Where(type => type.Name.EndsWith("QueryRepository")).SingleInstance()
-        //    //    .AsImplementedInterfaces();
-
-        //    //builder.RegisterAssemblyTypes(typeof(EntityFrameworkRepositoryBase<>).Assembly)
-        //    //    .Where(type => type.Name.EndsWith("CommandRepository")).SingleInstance()
-        //    //    .AsImplementedInterfaces();
-
-        //    //builder.RegisterAssemblyTypes(typeof(BaseService).Assembly)
-        //    //    .Where(type => type.Name.EndsWith("Service")).SingleInstance()
-        //    //    .AsImplementedInterfaces();
-
-        //    //builder.RegisterGeneric(typeof(EntityFrameworkRepositoryBase<>))
-        //    //    .As(typeof(IEntityFrameworkCommandRepository<>)).AsImplementedInterfaces();
-
-        //    //builder.RegisterGeneric(typeof(DapperRepositoryBase<>))
-        //    //    .As(typeof(IDapperQueryRepository<>)).AsImplementedInterfaces();
-
-        //    // Register dependencies, populate the services from
-        //    // the collection, and build the container. If you want
-        //    // to dispose of the container at the end of the app,
-        //    // be sure to keep a reference to it as a property or field.
-        //    //builder.RegisterType<MyType>().As<IMyType>();
-
-
-        //    builder.Populate(services);
-
-
-
-        //    //builder.RegisterType<AopInterceptor>();
-
-
-        //    //builder.RegisterAssemblyTypes(assembly)
-        //    //    .Where(type =>
-        //    //        typeof(IDependency).IsAssignableFrom(type) && !type.GetTypeInfo().IsAbstract)
-        //    //    .AsImplementedInterfaces()
-        //    //    .InstancePerLifetimeScope()
-        //    //    .EnableInterfaceInterceptors().InterceptedBy(typeof(AopInterceptor));
-
-
-        //    this.ApplicationContainer = builder.Build();
-
-        //    return new AutofacServiceProvider(this.ApplicationContainer);
-        //}
-
+  
 
         //public IServiceProvider ConfigureServices(IServiceCollection services)
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -194,26 +136,42 @@ namespace ED.WebAPI
 
         private IServiceProvider InitIoC(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("CommandDB");
+            var commandString = Configuration.GetConnectionString("CommandDB");
+            var queryString = Configuration.GetConnectionString("QueryDB");
             var dbContextOption = new DbContextOption
             {
-                ConnectionString = connectionString,
-                ModelAssemblyName = "ED.Models.Command"
+                CommandString = commandString,
+                QueryString = queryString
             };
             IoCContainer.Register(Configuration);//注册配置
             IoCContainer.Register(dbContextOption);//注册数据库配置信息
+            IoCContainer.Register(typeof(DapperContext));//注册EF上下文
             IoCContainer.Register(typeof(EntityFrameworkContext));//注册EF上下文
 
+            //var sdsa = Assembly.GetExecutingAssembly();
+            //IoCContainer.Register(Assembly.GetExecutingAssembly());
+            //(typeof(BaseService).Assembly)
 
-          
-
-            IoCContainer.Register(typeof(DapperRepositoryBase<>).Assembly);//注册仓储
-
-            IoCContainer.Register(typeof(EntityFrameworkRepositoryBase<>).Assembly);//注册仓储
-            //IoCContainer.Register("ED.Repositories.Query", "ED.Repositories.Core.Query");//注册仓储
-            //IoCContainer.Register("ED.Repositories.Command", "ED.Repositories.Core.Command");//注册仓储
-            //IoCContainer.Register("ED.Application.ServiceImp", "ED.Application.ServiceContract");//注册service
+            IoCContainer.Register(typeof(DapperRepositoryBase<>).Assembly, "QueryRepository");//注册仓储
+            IoCContainer.Register(typeof(EntityFrameworkRepositoryBase<>).Assembly, "CommandRepository");//注册仓储
+            IoCContainer.Register(typeof(BaseService).Assembly, "Service");
             return IoCContainer.Build(services);
+        }
+    }
+
+    //Code First
+    public class DbContextFactory : IDesignTimeDbContextFactory<EntityFrameworkContext>
+    {
+        public EntityFrameworkContext CreateDbContext(string[] args)
+        {
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+            var builder = new DbContextOptionsBuilder<EntityFrameworkContext>();
+            var commandString = configuration.GetConnectionString("CommandDB");
+            builder.UseSqlServer(commandString);
+            return new EntityFrameworkContext(builder.Options);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace ED.Application.ServiceImp
     public class UserService : BaseService, IUserService
     {
         private readonly IUserQueryRepository _userQuery;
-        private readonly IUserRoleQueryRepository _userRoleQuery;
+        //private readonly IUserRoleQueryRepository _userRoleQuery;
         //private readonly IUserCommandRepository _userCommand;
         //private readonly IUserRoleCommandRepository _userRoleCommand;
         //public UserService(IUserCommandRepository userCommandRepository,
@@ -21,11 +21,12 @@ namespace ED.Application.ServiceImp
         //    _userCommand = userCommandRepository;
         //    _userRoleCommand = userRoleCommandRepository;
         //}
-        public UserService(IUserQueryRepository userQueryRepository,
-            IUserRoleQueryRepository userRoleQueryRepository)
+        public UserService(IUserQueryRepository userQueryRepository
+            //IUserRoleQueryRepository userRoleQueryRepository
+            )
         {
             _userQuery = userQueryRepository;
-            _userRoleQuery = userRoleQueryRepository;
+           // _userRoleQuery = userRoleQueryRepository;
         }
 
         public GetResults<UserDto> GetUsers(PageInput input)
@@ -44,13 +45,13 @@ namespace ED.Application.ServiceImp
                 Name = user.Name,
                 RealName = user.RealName,
                 Password = "*******",
-                Roles = user.UserRoles.Take(4).Select(z => new BaseEntityDto()
-                {
-                    Id = z.Role.Id,
-                    Name = z.Role.RoleName
-                }).ToList(),
+                //Roles = user.UserRoles.Take(4).Select(z => new BaseEntityDto()
+                //{
+                //    Id = z.Role.Id,
+                //    Name = z.Role.RoleName
+                //}).ToList(),
 
-                TotalRole = user.UserRoles.Count()
+                //TotalRole = user.UserRoles.Count()
             }).ToList();
 
             return result;

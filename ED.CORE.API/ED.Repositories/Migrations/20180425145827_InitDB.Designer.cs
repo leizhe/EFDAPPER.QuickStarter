@@ -11,9 +11,10 @@ using System;
 namespace ED.Repositories.Migrations
 {
     [DbContext(typeof(EntityFrameworkContext))]
-    partial class EntityFrameworkContextModelSnapshot : ModelSnapshot
+    [Migration("20180425145827_InitDB")]
+    partial class InitDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

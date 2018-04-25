@@ -23,12 +23,12 @@ namespace ED.Models.Query
 
         public int State { get; set; }
 
-        public virtual ICollection<UserRole> UserRoles { get; set; }
+        //public virtual ICollection<UserRole> UserRoles { get; set; }
 
-        public User()
-        {
-            this.UserRoles = new List<UserRole>();
-        }
+        //public User()
+        //{
+        //    this.UserRoles = new List<UserRole>();
+        //}
         
     }
 }
