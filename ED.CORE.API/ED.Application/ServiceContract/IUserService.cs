@@ -6,20 +6,20 @@ namespace ED.Application.ServiceContract
     {
         GetResults<UserDto> GetUsers(PageInput input);
 
-        //UpdateResult UpdateUser(UserDto user);
+        UpdateResult UpdateUser(UserDto user);
 
-        //CreateResult<int> AddUser(UserDto user);
+        CreateResult<long> AddUser(UserDto user);
 
-        //DeleteResult DeleteUser(int userId);
+        DeleteResult DeleteUser(int userId);
 
-        //UpdateResult UpdatePwd(UserDto user);
+        UpdateResult UpdatePwd(UserDto user);
 
-        //GetResult<UserDto> GetUser(int userId);
+        GetResult<UserDto> GetUser(int userId);
 
         //UpdateResult UpdateRoles(UserDto user);
 
         //DeleteResult DeleteRole(int userId, int roleId);
 
-        //bool Exist(string username, string password);
+        bool Exist(string username, string password);
     }
 }

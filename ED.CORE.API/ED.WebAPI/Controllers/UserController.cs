@@ -28,26 +28,26 @@ namespace ED.WebAPI.Controllers
             return _userService.GetUsers(input);
         }
 
-        //[HttpGet]
-        //[Route("api/user/UserInfo")]
-        //public OutputBase GetUserInfo(int id)
-        //{
-        //    return _userService.GetUser(id);
-        //}
+        [HttpGet]
+        [Route("api/user/UserInfo")]
+        public OutputBase GetUserInfo(int id)
+        {
+            return _userService.GetUser(id);
+        }
 
-        //[HttpPost]
-        //[Route("api/user/AddUser")]
-        //public OutputBase CreateUser([FromBody] UserDto userDto)
-        //{
-        //    return _userService.AddUser(userDto);
-        //}
+        [HttpPost]
+        [Route("api/user/AddUser")]
+        public OutputBase CreateUser([FromBody] UserDto userDto)
+        {
+            return _userService.AddUser(userDto);
+        }
 
-        //[HttpPost]
-        //[Route("api/user/UpdateUser")]
-        //public OutputBase UpdateUser([FromBody] UserDto userDto)
-        //{
-        //    return _userService.UpdateUser(userDto);
-        //}
+        [HttpPost]
+        [Route("api/user/UpdateUser")]
+        public OutputBase UpdateUser([FromBody] UserDto userDto)
+        {
+            return _userService.UpdateUser(userDto);
+        }
 
         //[HttpPost]
         //[Route("api/user/UpdateRoles")]
@@ -56,12 +56,12 @@ namespace ED.WebAPI.Controllers
         //    return _userService.UpdateRoles(userDto);
         //}
 
-        //[HttpPost]
-        //[Route("api/user/DeleteUser/{id}")]
-        //public OutputBase DeleteUser(int id)
-        //{
-        //    return _userService.DeleteUser(id);
-        //}
+        [HttpPost]
+        [Route("api/user/DeleteUser/{id}")]
+        public OutputBase DeleteUser(int id)
+        {
+            return _userService.DeleteUser(id);
+        }
 
         //[HttpPost]
         //[Route("api/user/DeleteRole/{id}/{roleId}")]

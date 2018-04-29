@@ -14,14 +14,16 @@ namespace ED.Models.Query
 
         public DateTime CreationTime { get; set; }
 
-        public virtual ICollection<RolePermission> RolePermissions { get; set; }
+        [DBIgnore]
+        public  ICollection<RolePermission> RolePermissions { get; set; }
 
-        public virtual ICollection<Command.UserRole> UserRoles { get; set; }
+        [DBIgnore]
+        public  ICollection<UserRole> UserRoles { get; set; }
 
         public Role()
         {
             RolePermissions = new HashSet<RolePermission>();
-            UserRoles = new HashSet<Command.UserRole>();
+            UserRoles = new HashSet<UserRole>();
         }
 
        

@@ -23,8 +23,8 @@ namespace ED.Models.Query
 
         public int State { get; set; }
 
-        [DBIgnoreAttribute]
-        public virtual ICollection<UserRole> UserRoles { get; set; }
+        [DBIgnore]
+        public ICollection<UserRole> UserRoles { get; set; }
 
         public User()
         {

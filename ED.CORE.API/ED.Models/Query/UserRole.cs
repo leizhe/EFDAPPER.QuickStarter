@@ -8,8 +8,10 @@ namespace ED.Models.Query
         public long RoleId { get; set; }
         public long UserId { get; set; }
 
+        [DBIgnore]
         public virtual User User { get; set; }
 
+        [DBIgnore]
         public virtual Role Role { get; set; }
         
     }

@@ -27,11 +27,11 @@ namespace ED.Repositories.EntityFramework
             _option = option;
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseSqlServer(_option.CommandString);
-        //    base.OnConfiguring(optionsBuilder);
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(_option.CommandString);
+            base.OnConfiguring(optionsBuilder);
+        }
 
         public DbSet<User> Users { get; set; }
 
@@ -52,17 +52,7 @@ namespace ED.Repositories.EntityFramework
             modelBuilder.Entity<Permission>().ToTable("Permission");
         }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-        //    base.OnModelCreating(modelBuilder);
-        //}
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    AddEntityTypes(modelBuilder);
-        //    base.OnModelCreating(modelBuilder);
-        //}
+       
 
         //private void AddEntityTypes(ModelBuilder modelBuilder)
         //{
