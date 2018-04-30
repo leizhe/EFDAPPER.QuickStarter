@@ -36,6 +36,9 @@ namespace ED.Common.IoC
         {
             _types.AddRange(types.ToList());
         }
+
+
+
         /// <summary>
         /// 注册程序集。
         /// </summary>
@@ -70,6 +73,16 @@ namespace ED.Common.IoC
             _builder.RegisterAssemblyTypes(assembly)
                 .Where(t => t.Name.EndsWith(type))
                 .AsImplementedInterfaces();
+        }
+        /// <summary>
+        /// 注册程序集。
+        /// </summary>
+        /// <param name="implementationName"></param>
+        /// <param name="interfaceName"></param>
+        public static void Register(Type implementationName, Type interfaceName)
+        {
+            _builder.RegisterGeneric(implementationName)
+                .As(interfaceName).AsImplementedInterfaces();
         }
 
         /// <summary>
@@ -136,5 +149,6 @@ namespace ED.Common.IoC
             return _container.Resolve<T>();
         }
 
+   
     }
 }

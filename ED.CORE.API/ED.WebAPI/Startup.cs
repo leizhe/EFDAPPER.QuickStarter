@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
 using ED.Application.ServiceImp;
+using ED.Common.Filters;
 using ED.Common.Helpers;
 using ED.Common.IoC;
 using ED.Common.Options;
+using ED.Repositories.Core;
 using ED.Repositories.Dapper;
 using ED.Repositories.EntityFramework;
 using log4net;
@@ -15,20 +17,19 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
-using Zxw.Framework.NetCore.Filters;
 
 namespace ED.WebAPI
 {
     public class Startup
     {
 
-        public static ILoggerRepository repository { get; set; }
+        public static ILoggerRepository LoggerRepository { get; set; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
             //初始化log4net
-            repository = LogManager.CreateRepository("NETCoreRepository");
-            Log4NetHelper.SetConfig(repository, "log4net.config");
+            LoggerRepository = LogManager.CreateRepository("NETCoreRepository");
+            Log4NetHelper.SetConfig(LoggerRepository, "log4net.config");
         }
         
         public IConfiguration Configuration { get; }
@@ -107,6 +108,8 @@ namespace ED.WebAPI
             IoCContainer.Register(typeof(EntityFrameworkContext));
             IoCContainer.Register(typeof(DapperRepositoryBase<>).Assembly, "QueryRepository");//注册仓储
             IoCContainer.Register(typeof(EntityFrameworkRepositoryBase<>).Assembly, "CommandRepository");//注册仓储
+            IoCContainer.Register(typeof(EntityFrameworkRepositoryBase<>), typeof(IEntityFrameworkCommandRepository<>));
+            IoCContainer.Register(typeof(DapperRepositoryBase<>), typeof(IDapperQueryRepository<>));
             IoCContainer.Register(typeof(BaseService).Assembly, "Service");
             return IoCContainer.Build(services);
         }

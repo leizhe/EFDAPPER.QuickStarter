@@ -1,8 +1,7 @@
 ﻿using ED.Common.Helpers;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Zxw.Framework.NetCore.Helpers;
 
-namespace Zxw.Framework.NetCore.Filters
+namespace ED.Common.Filters
 {
     public class GlobalExceptionFilter : IExceptionFilter
     {
