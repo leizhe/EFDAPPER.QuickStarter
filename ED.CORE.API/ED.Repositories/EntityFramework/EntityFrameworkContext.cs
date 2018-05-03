@@ -17,7 +17,7 @@ namespace ED.Repositories.EntityFramework
     public sealed class EntityFrameworkContext : DbContext
     {
         private DbContextOption _option;
-        public EntityFrameworkContext(DbContextOptions options) : base(options) { }
+        //public EntityFrameworkContext(DbContextOptions options) : base(options) { }
         public EntityFrameworkContext(DbContextOption option)
         {
             if (option == null)

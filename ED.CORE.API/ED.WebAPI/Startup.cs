@@ -115,19 +115,19 @@ namespace ED.WebAPI
         }
     }
 
-    //Code First
-    public class DbContextFactory : IDesignTimeDbContextFactory<EntityFrameworkContext>
-    {
-        public EntityFrameworkContext CreateDbContext(string[] args)
-        {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
-            var builder = new DbContextOptionsBuilder<EntityFrameworkContext>();
-            var commandString = configuration.GetConnectionString("CommandDB");
-            builder.UseSqlServer(commandString);
-            return new EntityFrameworkContext(builder.Options);
-        }
-    }
+    ////Code First
+    //public class DbContextFactory : IDesignTimeDbContextFactory<EntityFrameworkContext>
+    //{
+    //    public EntityFrameworkContext CreateDbContext(string[] args)
+    //    {
+    //        IConfigurationRoot configuration = new ConfigurationBuilder()
+    //            .SetBasePath(Directory.GetCurrentDirectory())
+    //            .AddJsonFile("appsettings.json")
+    //            .Build();
+    //        var builder = new DbContextOptionsBuilder<EntityFrameworkContext>();
+    //        var commandString = configuration.GetConnectionString("CommandDB");
+    //        builder.UseSqlServer(commandString);
+    //        return new EntityFrameworkContext(builder.Options);
+    //    }
+    //}
 }

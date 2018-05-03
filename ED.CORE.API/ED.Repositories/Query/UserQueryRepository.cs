@@ -66,9 +66,13 @@ namespace ED.Repositories.Query
                         var tmpUr = tmp.UserRoles.FirstOrDefault(p => p.Id == ur.Id);
                         if (tmpUr == null)
                         {
-                            tmpUr = ur;
-                            tmp.UserRoles.Add(tmpUr);
-                            tmpUr.Role = r;
+                            if (ur!=null)
+                            {
+                                tmpUr = ur;
+                                tmp.UserRoles.Add(tmpUr);
+                                tmpUr.Role = r;
+                            }
+                           
                         }
                         return u;
                     },
