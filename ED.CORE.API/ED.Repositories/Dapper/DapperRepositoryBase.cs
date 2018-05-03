@@ -69,7 +69,7 @@ namespace ED.Repositories.Dapper
             
         }
 
-        public IQueryable<TEntity> FindQueryable(IQueryable<TEntity> q,Expression<Func<TEntity, bool>> expression, Expression<Func<TEntity, dynamic>> sortPredicate, SortOrder sortOrder, int pageNumber, int pageSize)
+        public IQueryable<TEntity> FindQueryable(IQueryable<TEntity> queryable, Expression<Func<TEntity, bool>> expression, Expression<Func<TEntity, dynamic>> sortPredicate, SortOrder sortOrder, int pageNumber, int pageSize)
         {
             if (pageNumber <= 0)
                 throw new ArgumentOutOfRangeException(nameof(pageNumber), pageNumber, "pageNumber must great than or equal to 1.");
@@ -77,7 +77,7 @@ namespace ED.Repositories.Dapper
                 throw new ArgumentOutOfRangeException(nameof(pageSize), pageSize, "pageSize must great than or equal to 1.");
             using (var db = Context.GetConnection())
             {
-                var query = q.AsQueryable().Where(expression);
+                var query = queryable.Where(expression);
                 var skip = (pageNumber - 1) * pageSize;
                 var take = pageSize;
                 if (sortPredicate == null)
@@ -114,5 +114,7 @@ namespace ED.Repositories.Dapper
         {
             return Filter(exp).Count();
         }
+
+       
     }
 }

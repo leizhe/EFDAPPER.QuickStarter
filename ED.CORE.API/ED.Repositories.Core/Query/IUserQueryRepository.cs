@@ -6,9 +6,8 @@ namespace ED.Repositories.Core.Query
 {
     public interface IUserQueryRepository : IDapperQueryRepository<User>
     {
-        List<User> GetAll();
-        IQueryable<User> GetAllQueryable();
+        IQueryable<User> GetAll();
 
-        User GetById();
+        //User GetById();
     }
 }

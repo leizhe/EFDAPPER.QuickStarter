@@ -35,10 +35,13 @@ namespace ED.Application.ServiceImp
         public GetResults<UserDto> GetUsers(PageInput input)
         {
             var result = GetDefault<GetResults<UserDto>>();
-            var q =_userQuery.GetAllQueryable();
+            var q =_userQuery.GetAll();
+            var dsadsa = q.ToList();
             var filterExp = BuildExpression(input);
             var query = _userQuery.FindQueryable(q,filterExp, user => user.Id, SortOrder.Descending, input.Current, input.Size);
+            var dsadsadsg = query.ToList();
             result.Total = _userQuery.Find(filterExp).Count();
+
             result.Data = query.Select(user => new UserDto()
             {
                 Id = user.Id,
